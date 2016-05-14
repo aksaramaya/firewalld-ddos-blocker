@@ -1,0 +1,4 @@
+#!/bin/bash
+yum install -y ipset
+firewall-cmd --direct --add-rule ipv4 filter INPUT 0  -m set --match-set blacklist src -j DROP
+ipset create blacklist hash:ip hashsize 4096

@@ -1,0 +1,20 @@
+#!/bin/bash
+for list in $(cat /var/log/nginx/api.ijakarta.id |grep '"CONNECT api.ijakarta.id:443 HTTP/1.1" 400')
+do
+IP=`echo $list | grep -Pom 1 '[0-9.]{7,15}'`
+echo $IP >> blocklist.txt
+CHECK=`grep "$IP" blocklist.txt | wc -l`
+
+if [ "$CHECK" -gt "30" ] && [ "$IP" != "" ]
+then
+ver=`grep "$IP" blocklist-ver.txt`
+
+if [ "$ver" = "" ]
+then
+echo $IP >> blocklist-ver.txt
+echo $IP
+ipset add blacklist $IP
+fi
+
+fi
+done
