@@ -1,5 +1,5 @@
 #!/bin/bash
-for list in $(cat /var/log/nginx/api.ijakarta.id |grep '"CONNECT api.ijakarta.id:443 HTTP/1.1" 400')
+for list in $(tailf /var/log/nginx/api.ijakarta.id |grep '"CONNECT api.ijakarta.id:443 HTTP/1.1" 400')
 do
 IP=`echo $list | grep -Pom 1 '[0-9.]{7,15}'`
 echo $IP >> blocklist.txt
